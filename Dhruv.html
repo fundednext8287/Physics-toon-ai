@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physics Toons AI</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#101827;
+  color:white;
+}
+header{
+  text-align:center;
+  padding:25px 15px;
+  background:#172554;
+  border-bottom:3px solid #38bdf8;
+}
+header h1{margin:0;color:#7dd3fc}
+header p{color:#dbeafe}
+main{max-width:700px;margin:auto;padding:20px}
+.card{
+  background:#1e293b;
+  border-radius:15px;
+  padding:20px;
+  margin-bottom:20px;
+}
+label{display:block;margin:14px 0 7px}
+input,select,textarea{
+  width:100%;
+  padding:13px;
+  border-radius:8px;
+  border:1px solid #475569;
+  background:#0f172a;
+  color:white;
+  font-size:16px;
+}
+button{
+  width:100%;
+  margin-top:18px;
+  padding:14px;
+  background:#0284c7;
+  color:white;
+  border:0;
+  border-radius:9px;
+  font-size:17px;
+  font-weight:bold;
+}
+button:active{background:#0369a1}
+#output{white-space:pre-wrap;line-height:1.7}
+.small{font-size:13px;color:#cbd5e1}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚡ Physics Toons AI</h1>
+  <p>Physics seekho, haste-haste!</p>
+</header>
+
+<main>
+<section class="card">
+  <h2>🎬 Create Your Cartoon Episode</h2>
+
+  <label for="topic">Physics topic</label>
+  <input id="topic" placeholder="Example: Gravity">
+
+  <label for="grade">Class</label>
+  <select id="grade">
+    <option>Class 8</option>
+    <option selected>Class 9</option>
+    <option>Class 10</option>
+  </select>
+
+  <label for="language">Language</label>
+  <select id="language">
+    <option>Hinglish</option>
+    <option>Hindi</option>
+    <option>English</option>
+  </select>
+
+  <label for="duration">Video length</label>
+  <select id="duration">
+    <option value="30">30-second Short</option>
+    <option value="60" selected>60-second Short</option>
+    <option value="180">3-minute video</option>
+  </select>
+
+  <button onclick="generate()">✨ Generate Episode Plan</button>
+  <p class="small">This first version works offline. It creates a template, not an AI-generated animation.</p>
+</section>
+
+<section class="card">
+  <h2>📜 Your Episode Plan</h2>
+  <div id="output">Your script will appear here.</div>
+  <button onclick="copyPlan()">📋 Copy Episode Plan</button>
+</section>
+</main>
+
+<script>
+function generate(){
+  const topic=document.getElementById('topic').value.trim();
+  const grade=document.getElementById('grade').value;
+  const language=document.getElementById('language').value;
+  const duration=document.getElementById('duration').value;
+
+  if(!topic){
+    alert('Please enter a Physics topic first!');
+    return;
+  }
+
+  const script=`⚡ PHYSICS TOONS — EPISODE PLAN
+
+TOPIC: ${topic}
+LEVEL: ${grade}
+LANGUAGE: ${language}
+DURATION: ${duration} seconds
+
+🎭 CHARACTERS
+Professor Photon: The funny Physics teacher.
+Bunty: The confused student.
+Chutki: The clever student.
+
+🎬 SCENE 1 — FUNNY HOOK
+Bunty: "Professor! Aaj ${topic} ka naam suna hai. Par ye hota kya hai?"
+Professor Photon: "Bunty, tension mat le! Aaj Physics ko itna simple banayenge ki tera dimaag bhi bolega—wah!"
+
+🎬 SCENE 2 — EXPLANATION
+Professor Photon explains ${topic} in simple ${language} suitable for ${grade}.
+Show a clear cartoon demonstration related to ${topic}.
+Use a real-life example and explain the scientific idea accurately.
+
+🎬 SCENE 3 — CARTOON DEMONSTRATION
+Bunty observes the demonstration.
+Chutki asks: "Humne abhi jo dekha, uske peeche Physics ka kaunsa rule hai?"
+Professor Photon explains the main concept and its important formula, if applicable.
+
+🎬 SCENE 4 — QUICK QUIZ
+Professor Photon: "${topic} par ek sawaal! Tum answer comments mein batao."
+Add one age-appropriate question about ${topic} and reveal the correct answer.
+
+🎙️ NARRATION
+Read the teacher's explanation clearly. Pause between important ideas.
+Add subtitles for every spoken line.
+
+🎨 VISUAL PLAN
+1. Bright cartoon classroom.
+2. Professor Photon introduces ${topic}.
+3. Bunty demonstrates the real-life example.
+4. Chutki explains the key idea using a simple diagram.
+5. End with a quiz and channel logo.
+
+📺 SUGGESTED YOUTUBE TITLE
+${topic} Explained with Funny Cartoons | ${grade} Physics
+
+📝 DESCRIPTION
+Learn ${topic} through a fun cartoon-style Physics lesson for ${grade}.
+Review the scientific explanation before publishing.
+
+IMPORTANT:
+This is a starter template. Check all scientific facts, formulas, examples, and answers before recording. Add original cartoon visuals and narration to make the episode your own.`;
+
+  document.getElementById('output').textContent=script;
+}
+
+function copyPlan(){
+  const text=document.getElementById('output').innerText;
+  if(!text || text==='Your script will appear here.'){
+    alert('Generate an episode plan first!');
+    return;
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text)
+      .then(()=>alert('Episode plan copied!'))
+      .catch(()=>fallbackCopy(text));
+  }else{
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text){
+  const area=document.createElement('textarea');
+  area.value=text;
+  document.body.appendChild(area);
+  area.select();
+  try{
+    document.execCommand('copy');
+    alert('Episode plan copied!');
+  }catch(e){
+    alert('Please select and copy the text manually.');
+  }
+  area.remove();
+}
+</script>
+</body>
+</html>
